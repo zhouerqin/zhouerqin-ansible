@@ -1,0 +1,6 @@
+---
+# handlers file for nginx-1.15
+- name: restart nginx
+  systemd:
+    state: started
+    name: nginx

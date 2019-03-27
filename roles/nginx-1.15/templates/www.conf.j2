@@ -1,0 +1,22 @@
+server {
+  listen 80;
+  server_name localhost;
+  root html;
+
+  access_log logs/localhost-access.log;
+  error_log  logs/localhost-error.log info;
+
+  location / {
+    index index.html index.php;
+    try_files $uri =404;
+  }
+
+  location ~* \.php$ {
+      fastcgi_index   index.php;
+      try_files $uri =404;
+      fastcgi_pass    127.0.0.1:9000;
+      include         fastcgi_params;
+      fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+      fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
+  }
+}

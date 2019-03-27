@@ -1,0 +1,43 @@
+---
+# defaults file for php-7.2
+php_source_dir: "/usr/local/src/php-7.2.16/"
+php_source_install_path: "/data/app/php-7.2/"
+php_source_make_command: "make"
+php_source_configure_command: >
+  ./configure 
+  --prefix={{ php_source_install_path }}
+  --enable-fpm 
+  --with-fpm-user=www-data
+  --with-fpm-group=www-data
+  --enable-mysqlnd 
+  --with-mysqli=mysqlnd 
+  --with-pdo-mysql=mysqlnd 
+  --with-iconv-dir 
+  --with-freetype-dir 
+  --with-jpeg-dir 
+  --with-png-dir 
+  --with-zlib 
+  --with-libxml-dir=/usr 
+  --enable-xml 
+  --disable-rpath 
+  --enable-bcmath 
+  --enable-shmop 
+  --enable-sysvsem
+  --enable-inline-optimization
+  --with-curl
+  --enable-mbregex
+  --enable-mbstring
+  --enable-intl
+  --enable-ftp
+  --with-gd
+  --enable-gd-native-ttf
+  --with-openssl
+  --with-mhash
+  --enable-pcntl
+  --enable-sockets
+  --with-xmlrpc
+  --enable-zip
+  --enable-soap
+  --with-gettext
+  --disable-fileinfo
+  --enable-opcache

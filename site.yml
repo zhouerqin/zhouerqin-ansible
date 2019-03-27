@@ -1,0 +1,7 @@
+- hosts: test2
+  user: root
+
+  roles:
+  - common
+  - nginx-1.15
+  - php-7.2

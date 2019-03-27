@@ -1,0 +1,27 @@
+---
+# tasks file for common
+- name: 安装常用软件
+  package:
+    name:
+      - vim
+      - git
+      - gcc
+      - gcc-c++
+      - make
+      - epel-release
+    state: latest
+  when: ansible_os_family == 'RedHat'
+
+- name: 设置时区为中国上海
+  timezone:
+    name: Asia/Shanghai
+
+- name: 禁用selinux
+  selinux:
+    state: disabled
+
+- name: 禁用firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no

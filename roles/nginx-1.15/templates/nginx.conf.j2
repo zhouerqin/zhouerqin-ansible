@@ -1,0 +1,57 @@
+worker_processes  1;
+error_log logs/nginx_error.log crit;
+worker_rlimit_nofile 65535;
+user {{ nginx_user }} {{ nginx_group }};
+
+events {
+    use epoll;
+    worker_connections  51200;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    keepalive_timeout  65;
+
+    client_header_buffer_size       128k;
+    large_client_header_buffers     4 64k;
+    sendfile                        on;
+    tcp_nodelay                     on;
+    client_max_body_size            10M;
+    output_buffers                  1 32k;
+    postpone_output                 1460;
+    # set_real_ip_from  xxx.xxx.xxx.xxx;
+
+    # Gzip配置
+    gzip                        on;
+    gzip_proxied                any;
+    gzip_min_length             1k;
+    gzip_buffers                4 8k;
+    gzip_http_version           1.0;
+    gzip_vary                   on;
+    gzip_types                  text/plain text/css application/x-javascript;
+
+    # FastCGI选项
+    fastcgi_connect_timeout   60;
+    fastcgi_send_timeout      300;
+    fastcgi_read_timeout      300;
+    fastcgi_buffer_size       128k;
+    fastcgi_buffers           8 128k;
+    fastcgi_intercept_errors  on;
+
+    # Proxy选项
+    proxy_http_version 1.1;
+    proxy_set_header          Host            $host;
+    proxy_set_header          X-Real-IP       $remote_addr;
+    proxy_set_header          X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout     60;
+    proxy_send_timeout        300;
+    proxy_read_timeout        300;
+    proxy_intercept_errors    on;
+
+
+    server {
+        listen 80 default;
+        return 403;
+    }
+    include vhost/*.conf;
+}

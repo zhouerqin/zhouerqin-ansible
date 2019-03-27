@@ -1,0 +1,29 @@
+---
+# defaults file for nginx-1.15
+source_dir: /usr/local/src/
+nginx_package_name: nginx-1.15.9.tar.gz
+nginx_source_dir: /usr/local/src/nginx-1.15.9/
+nginx_install_dir: /data/app/nginx-1.15/
+nginx_user: www-data
+nginx_group: www-data
+nginx_user_id: 1200
+nginx_configure_command: >
+  ./configure
+  --user={{ nginx_user }}
+  --group={{ nginx_group }}
+  --prefix={{ nginx_install_dir }}
+  --with-http_stub_status_module
+  --with-http_ssl_module
+  --with-http_v2_module
+  --with-http_image_filter_module
+  --with-http_gzip_static_module
+  --with-http_gunzip_module
+  --with-stream
+  --with-stream_ssl_module
+  --with-ipv6
+  --with-http_sub_module
+  --with-http_flv_module
+  --with-http_addition_module
+  --with-http_realip_module
+  --with-http_mp4_module
+

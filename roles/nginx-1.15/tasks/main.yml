@@ -1,0 +1,57 @@
+---
+# tasks file for nginx-1.15
+- name: 解压nginx源码包
+  unarchive:
+    src={{ nginx_package_name }}
+    dest={{ source_dir }}
+
+- name: 添加用户
+  user: name={{ nginx_user }} uid={{ nginx_user_id }}
+
+
+- name: 安装依赖包
+  package:
+    name: 
+      - gd-devel
+      - pcre-devel
+      - openssl-devel
+      - zlib-devel
+    state: present
+
+- name: 运行nginx配置脚本
+  command: >
+    {{ nginx_configure_command }}
+    chdir={{ nginx_source_dir }}
+
+- name: 编译/安装nginx 
+  command: >
+    {{ item }}
+    chdir={{ nginx_source_dir }}
+  with_items:
+    - make
+    - make install
+
+- name: 生成nginx配置文件
+  template:
+    src=nginx.conf.j2
+    dest="{{ nginx_install_dir }}conf/nginx.conf"
+
+- file:
+    path: "{{ nginx_install_dir }}conf/vhost"
+    state: directory
+
+- name: 生成nginx默认vhost演示文件
+  template:
+    src=www.conf.j2
+    dest="{{ nginx_install_dir }}conf/vhost/www.conf"
+
+- name: 生成nginx自启动文件
+  template:
+    src=nginx.service.j2
+    dest=/usr/lib/systemd/system/nginx.service
+  notify: restart nginx
+
+- name: 开机启动nginx
+  systemd:
+    name: nginx
+    enabled: yes
