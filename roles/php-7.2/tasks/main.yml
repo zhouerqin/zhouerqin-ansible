@@ -40,18 +40,22 @@
     - "{{ php_source_make_command }}"
     - make install
   
-- name: 生成php.ini配置文件
+- name: 生成 php.ini 配置文件
   template:
     src: php-fpm.conf.j2
     dest: "{{ php_source_install_path }}etc/php-fpm.conf"
 
-- name: 生成php-fpm配置文件
+- name: 生成 php-fpm www.conf 配置文件
   template:
     src: www.conf.j2
     dest: "{{ php_source_install_path }}etc/php-fpm.d/www.conf"
 
-- name: php-fpm开机启动
+- name: 添加 php-fpm.service
   template:
     src: php-fpm.service.j2
     dest: /usr/lib/systemd/system/php-fpm.service
 
+- name: 设置php-fpm开机启动
+  systemd:
+    name: php-fpm
+    enabled: yes
