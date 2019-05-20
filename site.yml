@@ -3,5 +3,5 @@
 
   roles:
   - common
-  - nginx-1.15
+  - nginx
   - php-7.2

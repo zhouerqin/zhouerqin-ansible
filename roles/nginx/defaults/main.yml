@@ -1,9 +1,9 @@
 ---
-# defaults file for nginx-1.15
+# defaults file for nginx
 source_dir: /usr/local/src/
 nginx_package_name: nginx-1.15.9.tar.gz
 nginx_source_dir: /usr/local/src/nginx-1.15.9/
-nginx_install_dir: /data/app/nginx-1.15/
+nginx_install_dir: /data/app/nginx/
 nginx_user: www-data
 nginx_group: www-data
 nginx_user_id: 1200

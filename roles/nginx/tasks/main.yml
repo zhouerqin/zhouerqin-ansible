@@ -1,5 +1,5 @@
 ---
-# tasks file for nginx-1.15
+# tasks file for nginx
 - name: 解压nginx源码包
   unarchive:
     src={{ nginx_package_name }}
