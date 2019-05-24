@@ -22,6 +22,9 @@
   file:
     path: "{{ item }}"
     state: directory
+    owner: "{{ redis_user }}"
+    group: "{{ redis_user }}"
+    mode: "0755"
   with_items:
     - "{{ redis_install_dir }}/data/"
     - "{{ redis_install_dir }}/etc/"
@@ -37,7 +40,9 @@
     src: redis.service.j2
     dest: "/usr/lib/systemd/system/redis.service"
 
-- name: 开机自动启动
+- name: 启动redis & 设置开机启动redis
   systemd:
     name: redis
+    state: started
+    daemon_reload: yes
     enabled: yes

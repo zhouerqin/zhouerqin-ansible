@@ -5,12 +5,12 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/data/app/redis/bin/redis-server /data/app/redis/etc/redis.conf --supervised systemd
-ExecStop=/data/app/redis/bin/redis-shutdown
+ExecStart=/data/app/redis/bin/redis-server /data/app/redis/etc/redis.conf
+ExecStop=/data/app/redis/bin/redis-cli shutdown
 Type=notify
-User=redis
-Group=redis
-RuntimeDirectory=redis
+User={{redis_user}}
+Group={{redis_user}}
+RuntimeDirectory={{redis_user}}
 RuntimeDirectoryMode=0755
 
 [Install]
