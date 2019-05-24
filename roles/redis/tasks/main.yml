@@ -1,0 +1,43 @@
+---
+# tasks file for redis
+
+- name: 解压源码包
+  unarchive:
+    src: "{{ redis_package_filename }}"
+    dest: "{{ source_base_dir }}"
+
+- name: 添加用户
+  user:
+    name: "{{ redis_user }}"
+
+- name: 编译安装
+  command: >
+    {{ item }}
+    chdir="{{ redis_source_dir }}"
+  with_items:
+    - make -j
+    - "make install PREFIX={{ redis_install_dir }}"
+
+- name: 生成目录结构
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ redis_install_dir }}/data/"
+    - "{{ redis_install_dir }}/etc/"
+    - "{{ redis_install_dir }}/run/"
+
+- name: 生成配置文件
+  template:
+    src: redis.conf.j2
+    dest: "{{ redis_install_dir }}/etc/redis.conf"
+
+- name: 生成自启动文件
+  template:
+    src: redis.service.j2
+    dest: "/usr/lib/systemd/system/redis.service"
+
+- name: 开机自动启动
+  systemd:
+    name: redis
+    enabled: yes

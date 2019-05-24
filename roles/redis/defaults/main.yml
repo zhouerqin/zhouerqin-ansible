@@ -1,0 +1,8 @@
+---
+# defaults file for redis
+redis_package_filename: redis-5.0.5.tar.gz
+source_base_dir: /data/src
+redis_user: redis
+redis_install_dir: /data/app/redis
+redis_source_dir: "{{ source_base_dir }}/redis-5.0.5/"
+
