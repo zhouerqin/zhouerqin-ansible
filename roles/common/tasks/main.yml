@@ -9,6 +9,7 @@
       - gcc-c++
       - make
       - epel-release
+      - net-tools
     state: latest
   when: ansible_os_family == 'RedHat'
 
@@ -25,3 +26,13 @@
     name: firewalld
     state: stopped
     enabled: no
+
+- name: 创建目录结构
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ base_dir }}"
+    - "{{ app_base_dir }}"
+    - "{{ source_base_dir }}"
+    - "{{ code_base_dir }}"

@@ -1,2 +1,6 @@
 ---
 # defaults file for common
+base_dir: /data
+app_base_dir: "{{ base_dir }}/app"
+source_base_dir: "{{ base_dir }}/src"
+code_base_dir: "{{ base_dir }}/srv"
