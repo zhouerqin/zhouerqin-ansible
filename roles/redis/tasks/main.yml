@@ -40,6 +40,11 @@
     src: redis.service.j2
     dest: "/usr/lib/systemd/system/redis.service"
 
+- name: 添加环境变量配置文件
+  template:
+    src: redis.sh.j2
+    dest: "/etc/profile.d/redis.sh"
+
 - name: 启动redis & 设置开机启动redis
   systemd:
     name: redis
