@@ -11,11 +11,11 @@
     name: "{{ redis_user }}"
 
 - name: 编译安装
-  command: >
-    {{ item }}
-    chdir="{{ redis_source_dir }}"
+  command:
+    cmd: "{{ item }}"
+    chdir: "{{ redis_source_dir }}"
   with_items:
-    - make -j
+    - make
     - "make install PREFIX={{ redis_install_dir }}"
 
 - name: 生成目录结构
