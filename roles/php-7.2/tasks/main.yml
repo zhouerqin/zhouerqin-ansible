@@ -1,11 +1,9 @@
 ---
 # tasks file for php-7.2
-- name: yy
-  set_fact:
-    php_install_dir: "{{ php_source_install_path }}"
-
 - name: 解压php-7.2源码包
-  unarchive: src=php-7.2.16.tar.gz dest=/usr/local/src/
+  unarchive:
+    src: php-7.2.16.tar.gz
+    dest: /usr/local/src/
 
 - name: 安装依赖包(CentOS)
   package:
@@ -28,18 +26,18 @@
 
 - name: 运行PHP配置脚本
   command: >
-    {{ php_source_configure_command }}
-    chdir={{ php_source_dir }}
+    cmd: "{{ php_source_configure_command }}"
+    chdir: "{{ php_source_dir }}"
 
 
 - name: 编译/安装 PHP
   command: >
-    {{ item }}
-    chdir={{ php_source_dir }}
+    cmd: "{{ item }}"
+    chdir: "{{ php_source_dir }}"
   with_items:
     - "{{ php_source_make_command }}"
     - make install
-  
+
 - name: 生成 php.ini 配置文件
   template:
     src: php-fpm.conf.j2

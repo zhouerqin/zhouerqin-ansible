@@ -1,0 +1,56 @@
+---
+# tasks file for mysql
+- name: 安装依赖
+  package:
+    name: libaio
+    state: present
+
+- name: 添加用户
+  user:
+    name: "{{ mysql_user }}"
+    shell: /sbin/false
+
+- name: 解压mysql源文件
+  unarchive:
+    src: "{{ mysql_package_filename }}"
+    dest: "/data/app/"
+
+- name: 添加软链接
+  file:
+    src:  /data/app/mysql-5.7.30-linux-glibc2.12-x86_64/
+    dest: /usr/local/mysql
+    state: link
+
+- name: 设置文件夹权限
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ mysql_user }}"
+  with_items:
+    - "/usr/local/mysql/data"
+
+- name: 添加配置文件
+  template:
+    src: "{{ mysql_conf }}"
+    dest: /etc/my.cnf
+  notify: restart mysql
+
+- name: 数据库初始化配置
+  command:
+    cmd: "bin/mysqld --initialize --user=mysql"
+    chdir: "/usr/local/mysql"
+  register: rc
+  notify: display password
+
+- name: 添加init配置文件
+  template:
+    src: "{{ mysql_init_conf }}"
+    dest: /usr/lib/systemd/system/mysql.service
+  notify: restart mysql
+
+- name: 设置MySQL开机启动/确认MySQL已启动
+  systemd:
+    name: mysql
+    enabled: yes
+    state: started
+    daemon_reload: yes

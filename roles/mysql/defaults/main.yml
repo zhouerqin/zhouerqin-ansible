@@ -1,0 +1,7 @@
+---
+# defaults file for mysql
+mysql_user: mysql
+mysql_install_dir: /data/app/mysql
+mysql_conf: my.cnf.j2
+mysql_init_conf: mysql.service.j2
+mysql_package_filename: mysql-5.7.30-linux-glibc2.12-x86_64.tar.gz
